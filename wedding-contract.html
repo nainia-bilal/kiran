@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Contract - Esrae & Bilal</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600;700&family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- html2pdf.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d4b8 100%);
+            min-height: 100vh;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        body.rtl {
+            direction: rtl;
+            font-family: 'Amiri', serif;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fffef9;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(218, 165, 32, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(218, 165, 32, 0.03) 0%, transparent 50%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="8" opacity="0.02" fill="%23DAA520">✦</text></svg>');
+            box-shadow: 
+                0 0 40px rgba(218, 165, 32, 0.2),
+                inset 0 0 100px rgba(255, 250, 240, 0.5);
+            border: 2px solid #daa520;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #daa520 20%, 
+                #f4e4c1 40%, 
+                #daa520 60%, 
+                transparent
+            );
+        }
+
+        .container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #daa520 20%, 
+                #f4e4c1 40%, 
+                #daa520 60%, 
+                transparent
+            );
+        }
+
+        .ornament {
+            text-align: center;
+            color: #daa520;
+            font-size: 32px;
+            margin: 20px 0;
+            opacity: 0.6;
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            text-align: center;
+            padding: 20px 20px 0;
+        }
+
+        .lang-btn {
+            background: linear-gradient(135deg, #daa520 0%, #b8860b 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(218, 165, 32, 0.4);
+        }
+
+        .lang-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Content */
+        .content {
+            padding: 40px 50px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 64px;
+            color: #b8860b;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        body.rtl .header h1 {
+            font-family: 'Amiri', serif;
+            font-size: 56px;
+        }
+
+        .header .subtitle {
+            font-size: 18px;
+            color: #8b7355;
+            font-style: italic;
+            letter-spacing: 3px;
+        }
+
+        /* Couple Names */
+        .couple-names {
+            text-align: center;
+            margin: 50px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(218, 165, 32, 0.1) 0%, rgba(244, 228, 193, 0.2) 100%);
+            border-radius: 15px;
+            border: 1px solid rgba(218, 165, 32, 0.3);
+        }
+
+        .couple-names h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 72px;
+            color: #b8860b;
+            margin: 20px 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        body.rtl .couple-names h2 {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+        }
+
+        .couple-names .hearts {
+            font-size: 36px;
+            color: #d4af37;
+            margin: 10px 0;
+        }
+
+        /* Contract Text */
+        .contract-text {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.5);
+            border-left: 4px solid #daa520;
+            border-radius: 5px;
+            line-height: 1.8;
+            font-size: 18px;
+            color: #4a4a4a;
+        }
+
+        body.rtl .contract-text {
+            border-left: none;
+            border-right: 4px solid #daa520;
+        }
+
+        .contract-text p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .contract-text .highlight {
+            color: #b8860b;
+            font-weight: 600;
+        }
+
+        /* Poetry Section */
+        .poetry-section {
+            margin: 50px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(184, 134, 11, 0.05) 0%, rgba(218, 165, 32, 0.1) 100%);
+            border-radius: 10px;
+            border: 2px dashed #daa520;
+            text-align: center;
+        }
+
+        .poetry-section h3 {
+            font-size: 32px;
+            color: #b8860b;
+            margin-bottom: 25px;
+            font-family: 'Great Vibes', cursive;
+        }
+
+        body.rtl .poetry-section h3 {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
+        }
+
+        .poetry-section .verse {
+            font-size: 22px;
+            line-height: 2;
+            color: #5a4a3a;
+            font-style: italic;
+            margin: 20px 0;
+        }
+
+        body.rtl .poetry-section .verse {
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        .poetry-section .author {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #8b7355;
+            font-weight: 600;
+        }
+
+        /* Signature Section */
+        .signature-section {
+            margin: 50px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            border: 2px solid #daa520;
+        }
+
+        .signature-section h3 {
+            text-align: center;
+            font-size: 28px;
+            color: #b8860b;
+            margin-bottom: 20px;
+        }
+
+        .signature-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #signatureCanvas {
+            border: 2px solid #daa520;
+            border-radius: 5px;
+            background: white;
+            cursor: crosshair;
+            touch-action: none;
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .signature-buttons {
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-clear:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-pdf:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Date */
+        .date-section {
+            text-align: center;
+            margin: 40px 0;
+            padding: 20px;
+            font-size: 18px;
+            color: #8b7355;
+            font-style: italic;
+        }
+
+        /* Decorative Elements */
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            color: #daa520;
+            font-size: 24px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 48px;
+            }
+
+            body.rtl .header h1 {
+                font-size: 42px;
+            }
+
+            .couple-names h2 {
+                font-size: 52px;
+            }
+
+            .contract-text {
+                font-size: 16px;
+                padding: 20px;
+            }
+
+            .poetry-section .verse {
+                font-size: 18px;
+            }
+
+            body.rtl .poetry-section .verse {
+                font-size: 20px;
+            }
+
+            #signatureCanvas {
+                width: 100%;
+                height: 200px;
+            }
+
+            .signature-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 36px;
+            }
+
+            .couple-names h2 {
+                font-size: 40px;
+            }
+
+            .poetry-section {
+                padding: 20px;
+            }
+        }
+
+        /* Print/PDF Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .language-toggle,
+            .signature-buttons {
+                display: none !important;
+            }
+
+            .container {
+                box-shadow: none;
+                border: 2px solid #daa520;
+            }
+        }
+
+        /* Loading animation for PDF generation */
+        .generating {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .generating::after {
+            content: 'Generating PDF...';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 18px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="contract">
+        <!-- Language Toggle -->
+        <div class="language-toggle">
+            <button class="lang-btn" id="langToggle" onclick="toggleLanguage()">
+                <span id="langText">العربية</span>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Ornament -->
+            <div class="ornament">✦ ❖ ✦</div>
+
+            <!-- Header -->
+            <div class="header">
+                <h1 id="mainTitle">Wedding Contract</h1>
+                <p class="subtitle" id="subtitle">A COVENANT OF ETERNAL LOVE</p>
+            </div>
+
+            <!-- Divider -->
+            <div class="divider">❦ ❦ ❦</div>
+
+            <!-- Couple Names -->
+            <div class="couple-names">
+                <div class="hearts">♥ ♥ ♥</div>
+                <h2 id="coupleNames">Esrae & Bilal</h2>
+                <div class="hearts">♥ ♥ ♥</div>
+            </div>
+
+            <!-- Divider -->
+            <div class="divider">❦ ❦ ❦</div>
+
+            <!-- Contract Text -->
+            <div class="contract-text" id="contractText">
+                <p>On this blessed day, we, <span class="highlight">Esrae</span> and <span class="highlight">Bilal</span>, enter into this sacred covenant of love, promising to cherish, honor, and adore one another until the end of time.</p>
+                
+                <p>We vow to be each other's companion through every sunrise and sunset, to hold hands through storms and sunshine, and to build a home filled with laughter, kindness, and unwavering devotion.</p>
+                
+                <p>In joy and in sorrow, in abundance and in need, we pledge to stand together as one, united by love that transcends all boundaries. Our hearts beat as one, our souls intertwined for eternity.</p>
+                
+                <p>We promise to nurture our love with tenderness, to communicate with honesty, to forgive with grace, and to celebrate each moment we share. Together, we will create a lifetime of beautiful memories.</p>
+                
+                <p>May our love be a beacon of light, inspiring those around us and growing stronger with each passing day. This is our promise, our commitment, our eternal bond.</p>
+            </div>
+
+            <!-- Poetry Section -->
+            <div class="poetry-section" id="poetrySection">
+                <h3 id="poetryTitle">Words of Love</h3>
+                <div class="verse" id="poetryVerse">
+                    "In all the world, there is no heart for me like yours.<br>
+                    In all the world, there is no love for you like mine."
+                </div>
+                <div class="author" id="poetryAuthor">— Maya Angelou</div>
+            </div>
+
+            <!-- Divider -->
+            <div class="divider">❦ ❦ ❦</div>
+
+            <!-- Date -->
+            <div class="date-section" id="dateSection">
+                <p id="dateText">Signed on this day: <span id="currentDate"></span></p>
+            </div>
+
+            <!-- Signature Section -->
+            <div class="signature-section">
+                <h3 id="signatureTitle">Your Signature</h3>
+                <div class="signature-container">
+                    <canvas id="signatureCanvas" width="700" height="250"></canvas>
+                </div>
+                <div class="signature-buttons" id="signatureButtons">
+                    <button class="btn btn-clear" id="clearBtn" onclick="clearSignature()">
+                        <span id="clearText">Clear Signature</span>
+                    </button>
+                    <button class="btn btn-pdf" id="downloadBtn" onclick="downloadPDF()">
+                        <span id="downloadText">Download Contract as PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ornament -->
+            <div class="ornament">✦ ❖ ✦</div>
+        </div>
+    </div>
+
+    <script>
+        // Translations
+        const translations = {
+            en: {
+                langText: 'العربية',
+                mainTitle: 'Wedding Contract',
+                subtitle: 'A COVENANT OF ETERNAL LOVE',
+                coupleNames: 'Esrae & Bilal',
+                contractText: `
+                    <p>On this blessed day, we, <span class="highlight">Esrae</span> and <span class="highlight">Bilal</span>, enter into this sacred covenant of love, promising to cherish, honor, and adore one another until the end of time.</p>
+                    
+                    <p>We vow to be each other's companion through every sunrise and sunset, to hold hands through storms and sunshine, and to build a home filled with laughter, kindness, and unwavering devotion.</p>
+                    
+                    <p>In joy and in sorrow, in abundance and in need, we pledge to stand together as one, united by love that transcends all boundaries. Our hearts beat as one, our souls intertwined for eternity.</p>
+                    
+                    <p>We promise to nurture our love with tenderness, to communicate with honesty, to forgive with grace, and to celebrate each moment we share. Together, we will create a lifetime of beautiful memories.</p>
+                    
+                    <p>May our love be a beacon of light, inspiring those around us and growing stronger with each passing day. This is our promise, our commitment, our eternal bond.</p>
+                `,
+                poetryTitle: 'Words of Love',
+                poetryVerse: '"In all the world, there is no heart for me like yours.<br>In all the world, there is no love for you like mine."',
+                poetryAuthor: '— Maya Angelou',
+                dateText: 'Signed on this day: ',
+                signatureTitle: 'Your Signature',
+                clearText: 'Clear Signature',
+                downloadText: 'Download Contract as PDF'
+            },
+            ar: {
+                langText: 'English',
+                mainTitle: 'عقد قران',
+                subtitle: 'ميثاق حب أبدي',
+                coupleNames: 'إسراء و بلال',
+                contractText: `
+                    <p>في هذا اليوم المبارك، نحن <span class="highlight">إسراء</span> و <span class="highlight">بلال</span>، ندخل في هذا العهد المقدس للحب، واعدين بأن نعتز ونكرم ونحب بعضنا البعض حتى نهاية الزمان.</p>
+                    
+                    <p>نتعهد بأن نكون رفيق بعضنا البعض في كل شروق وغروب، أن نمسك أيدينا في العواصف والمشمس، وأن نبني بيتًا مليئًا بالضحك واللطف والإخلاص الذي لا يتزعزع.</p>
+                    
+                    <p>في الفرح والحزن، في الوفرة والحاجة، نتعهد بالوقوف معًا كواحد، متحدين بحب يتجاوز كل الحدود. قلوبنا تنبض كواحدة، وأرواحنا متشابكة إلى الأبد.</p>
+                    
+                    <p>نعد برعاية حبنا بحنان، والتواصل بصراحة، والمغفرة برحمة، والاحتفال بكل لحظة نتشاركها. معًا، سنخلق حياة من الذكريات الجميلة.</p>
+                    
+                    <p>ليكن حبنا منارة للنور، يلهم من حولنا ويزداد قوة مع كل يوم يمر. هذا هو وعدنا، التزامنا، رابطتنا الأبدية.</p>
+                `,
+                poetryTitle: 'شعر رومانسي',
+                poetryVerse: 'أَحَبُّكَ جِدًّا<br>أَحَبُّكَ جِدًّا<br>وَأَبْكِي لأَنَّ الكَلامَ الجَميلَ<br>يُصابُ بِشَيْءٍ مِنَ التَّرَفِ الحَزينِ<br>حينَ أُحاوِلُ أَنْ أَكْتُبَ القَصيدَة عَنْكِ',
+                poetryAuthor: '— نزار قباني',
+                dateText: 'وُقِّع في هذا اليوم: ',
+                signatureTitle: 'توقيعك',
+                clearText: 'مسح التوقيع',
+                downloadText: 'تحميل العقد بصيغة PDF'
+            }
+        };
+
+        // Current language
+        let currentLang = 'en';
+
+        // Toggle Language Function
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            const t = translations[currentLang];
+            
+            // Toggle RTL
+            if (currentLang === 'ar') {
+                document.body.classList.add('rtl');
+                document.documentElement.setAttribute('lang', 'ar');
+            } else {
+                document.body.classList.remove('rtl');
+                document.documentElement.setAttribute('lang', 'en');
+            }
+            
+            // Update text content
+            document.getElementById('langText').textContent = t.langText;
+            document.getElementById('mainTitle').textContent = t.mainTitle;
+            document.getElementById('subtitle').textContent = t.subtitle;
+            document.getElementById('coupleNames').textContent = t.coupleNames;
+            document.getElementById('contractText').innerHTML = t.contractText;
+            document.getElementById('poetryTitle').textContent = t.poetryTitle;
+            document.getElementById('poetryVerse').innerHTML = t.poetryVerse;
+            document.getElementById('poetryAuthor').textContent = t.poetryAuthor;
+            document.getElementById('dateText').innerHTML = t.dateText + '<span id="currentDate"></span>';
+            document.getElementById('signatureTitle').textContent = t.signatureTitle;
+            document.getElementById('clearText').textContent = t.clearText;
+            document.getElementById('downloadText').textContent = t.downloadText;
+            
+            // Update date
+            setCurrentDate();
+        }
+
+        // Set Current Date
+        function setCurrentDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const locale = currentLang === 'ar' ? 'ar-SA' : 'en-US';
+            const dateString = now.toLocaleDateString(locale, options);
+            document.getElementById('currentDate').textContent = dateString;
+        }
+
+        // Initialize date on load
+        setCurrentDate();
+
+        // Signature Canvas Setup
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Set canvas size for high DPI displays
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            
+            // Store current signature
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            
+            ctx.scale(dpr, dpr);
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            
+            // Restore signature
+            ctx.putImageData(imageData, 0, 0);
+            
+            // Set drawing style
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+
+        // Initialize canvas
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Get coordinates
+        function getCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            return { x, y };
+        }
+
+        // Mouse events
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Touch events
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrawing(e);
+        });
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e);
+        });
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            stopDrawing(e);
+        });
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const coords = getCoordinates(e);
+            lastX = coords.x;
+            lastY = coords.y;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const coords = getCoordinates(e);
+            
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(coords.x, coords.y);
+            ctx.stroke();
+            
+            lastX = coords.x;
+            lastY = coords.y;
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        // Clear Signature
+        function clearSignature() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Download PDF
+        function downloadPDF() {
+            // Hide buttons before generating PDF
+            const buttonsDiv = document.getElementById('signatureButtons');
+            const langToggle = document.querySelector('.language-toggle');
+            
+            buttonsDiv.style.display = 'none';
+            langToggle.style.display = 'none';
+            
+            // Add generating class
+            document.body.classList.add('generating');
+            
+            const element = document.getElementById('contract');
+            const opt = {
+                margin: 10,
+                filename: 'Wedding_Contract_Esrae_Bilal.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#fffef9'
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }
+            };
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Show buttons again after PDF generation
+                buttonsDiv.style.display = 'flex';
+                langToggle.style.display = 'block';
+                document.body.classList.remove('generating');
+            }).catch((error) => {
+                console.error('PDF generation error:', error);
+                // Show buttons again even if there's an error
+                buttonsDiv.style.display = 'flex';
+                langToggle.style.display = 'block';
+                document.body.classList.remove('generating');
+                alert('There was an error generating the PDF. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
